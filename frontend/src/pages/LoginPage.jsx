@@ -18,7 +18,11 @@ export const LoginPage = () => {
     try {
       const data = await authService.login({ email, password });
       login(data);
-      navigate(data.user.role === "admin" ? "/admin" : "/candidate");
+      if (data.user.role === "super-admin") {
+        navigate("/super-admin");
+      } else {
+        navigate(data.user.role === "admin" ? "/admin" : "/candidate");
+      }
     } catch (err) {
       setError(err.response?.data?.message || "Login failed");
     } finally {

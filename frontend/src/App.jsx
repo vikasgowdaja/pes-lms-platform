@@ -5,6 +5,8 @@ import { AdminDashboard } from "./pages/AdminDashboard";
 import { CandidateDashboard } from "./pages/CandidateDashboard";
 import { LoginPage } from "./pages/LoginPage";
 import { SignupPage } from "./pages/SignupPage";
+import { StudentDetailPage } from "./pages/StudentDetailPage";
+import { SuperAdminDashboard } from "./pages/SuperAdminDashboard";
 import { TestTakingPage } from "./pages/TestTakingPage";
 
 const TopNav = () => {
@@ -44,6 +46,9 @@ const RootRedirect = () => {
   if (!user) {
     return <Navigate to="/login" replace />;
   }
+  if (user.role === "super-admin") {
+    return <Navigate to="/super-admin" replace />;
+  }
   return <Navigate to={user.role === "admin" ? "/admin" : "/candidate"} replace />;
 };
 
@@ -65,10 +70,34 @@ export default function App() {
             }
           />
           <Route
+            path="/super-admin"
+            element={
+              <ProtectedRoute role="super-admin">
+                <SuperAdminDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/candidate"
             element={
               <ProtectedRoute role="candidate">
                 <CandidateDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/students/:studentId"
+            element={
+              <ProtectedRoute role="admin">
+                <StudentDetailPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/super-admin/students/:studentId"
+            element={
+              <ProtectedRoute role="super-admin">
+                <StudentDetailPage />
               </ProtectedRoute>
             }
           />

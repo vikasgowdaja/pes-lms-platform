@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["admin", "candidate"],
+      enum: ["super-admin", "admin", "candidate"],
       default: "candidate",
       index: true
     },
@@ -37,12 +37,17 @@ const userSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       index: true
+    },
+    linkedSuperAdmin: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      index: true
     }
   },
   { timestamps: true }
 );
 
-userSchema.index({ role: 1, linkedAdmin: 1, createdAt: -1 });
+userSchema.index({ role: 1, linkedAdmin: 1, linkedSuperAdmin: 1, createdAt: -1 });
 
 userSchema.pre("save", async function hashPassword(next) {
   if (!this.isModified("password")) {

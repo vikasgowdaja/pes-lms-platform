@@ -1,10 +1,25 @@
 import { Attempt } from "../models/Attempt.js";
 import { CheatingLog } from "../models/CheatingLog.js";
 import { Test } from "../models/Test.js";
+import { User } from "../models/User.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
+const resolveAdminScope = async (requestUser) => {
+  if (requestUser.role === "admin") {
+    return { adminIds: [requestUser._id] };
+  }
+
+  if (requestUser.role === "super-admin") {
+    const managedAdmins = await User.find({ role: "admin", linkedSuperAdmin: requestUser._id }).select("_id");
+    return { adminIds: managedAdmins.map((admin) => admin._id) };
+  }
+
+  return { adminIds: [] };
+};
+
 export const getAdminAnalytics = asyncHandler(async (req, res) => {
-  const tests = await Test.find({ createdBy: req.user._id }).select("_id title");
+  const { adminIds } = await resolveAdminScope(req.user);
+  const tests = await Test.find({ createdBy: { $in: adminIds } }).select("_id title");
   const testIds = tests.map((test) => test._id);
 
   const [attemptStats, scoreStats, topTests] = await Promise.all([
@@ -57,7 +72,8 @@ export const getAdminAnalytics = asyncHandler(async (req, res) => {
 });
 
 export const getAdminActivity = asyncHandler(async (req, res) => {
-  const tests = await Test.find({ createdBy: req.user._id }).select("_id title");
+  const { adminIds } = await resolveAdminScope(req.user);
+  const tests = await Test.find({ createdBy: { $in: adminIds } }).select("_id title");
   const testIds = tests.map((test) => test._id);
   const page = Number(req.query.page || 1);
   const limit = Math.min(Number(req.query.limit || 20), 100);
@@ -112,5 +128,68 @@ export const getAdminActivity = asyncHandler(async (req, res) => {
       total,
       totalPages: Math.ceil(total / limit)
     }
+  });
+});
+
+export const getStudentDetail = asyncHandler(async (req, res) => {
+  const { studentId } = req.params;
+  const { adminIds } = await resolveAdminScope(req.user);
+
+  const student = await User.findOne({
+    _id: studentId,
+    role: "candidate",
+    linkedAdmin: { $in: adminIds }
+  }).populate("linkedAdmin", "_id name email");
+
+  if (!student) {
+    return res.status(404).json({ message: "Student not found in your scope" });
+  }
+
+  const attempts = await Attempt.find({ userId: student._id })
+    .populate("testId", "title")
+    .sort({ startedAt: -1 });
+
+  const attemptIds = attempts.map((attempt) => attempt._id);
+  const logs = await CheatingLog.find({ attemptId: { $in: attemptIds } })
+    .select("attemptId event metadata timestamp")
+    .sort({ timestamp: -1 });
+
+  const scoreTrend = attempts
+    .filter((attempt) => attempt.status !== "IN_PROGRESS")
+    .map((attempt) => ({
+      attemptId: attempt._id,
+      date: attempt.submittedAt || attempt.updatedAt,
+      score: attempt.score,
+      maxScore: attempt.maxScore,
+      percentage: attempt.maxScore ? Number(((attempt.score / attempt.maxScore) * 100).toFixed(2)) : 0,
+      testTitle: attempt.testId?.title || "Unknown"
+    }))
+    .sort((a, b) => new Date(a.date) - new Date(b.date));
+
+  return res.json({
+    student: {
+      id: student._id,
+      name: student.name,
+      email: student.email,
+      linkedAdmin: student.linkedAdmin
+    },
+    attemptsTimeline: attempts.map((attempt) => ({
+      attemptId: attempt._id,
+      testTitle: attempt.testId?.title || "Unknown",
+      status: attempt.status,
+      score: attempt.score,
+      maxScore: attempt.maxScore,
+      violationCount: attempt.violationCount,
+      startedAt: attempt.startedAt,
+      submittedAt: attempt.submittedAt,
+      updatedAt: attempt.updatedAt
+    })),
+    cheatingLogs: logs.map((log) => ({
+      attemptId: log.attemptId,
+      event: log.event,
+      metadata: log.metadata,
+      timestamp: log.timestamp
+    })),
+    scoreTrend
   });
 });

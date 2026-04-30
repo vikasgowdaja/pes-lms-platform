@@ -38,6 +38,11 @@ Production-oriented full-stack MERN application for online assessments with MCQ 
   - Admin registration code and link generation
   - Candidate signup under specific admin code
   - Admin-side student list for linked candidates
+  - Bulk student import via CSV under admin (or selected admin by super-admin)
+  - Dedicated per-student detail page with attempt timeline, cheating logs, and score trend
+- Super-admin hierarchy:
+  - Super-admin can create and manage multiple admins
+  - Role-scoped analytics and student views across managed admins
 - Pagination + filtering on tests/attempts APIs
 - Security baseline:
   - Helmet, CORS, rate limiting, mongo sanitization, route protection
@@ -101,6 +106,9 @@ Use `frontend/.env.example` as template.
 - `GET /api/auth/admin/registration` (admin)
 - `POST /api/auth/admin/registration/regenerate` (admin)
 - `GET /api/auth/admin/students` (admin)
+- `POST /api/auth/admin/students/import/csv` (admin/super-admin)
+- `GET /api/auth/super-admin/admins` (super-admin)
+- `POST /api/auth/super-admin/admins` (super-admin)
 
 - `GET /api/tests`
 - `GET /api/tests/:id`
@@ -126,6 +134,7 @@ Use `frontend/.env.example` as template.
 
 - `GET /api/analytics/admin` (admin)
 - `GET /api/analytics/admin/activity` (admin)
+- `GET /api/analytics/admin/students/:studentId/detail` (admin/super-admin)
 
 ## CSV Import Format
 
@@ -153,6 +162,23 @@ Example `correctAnswers` values:
 
 - Single: `B`
 - Multiple: `A|C`
+
+## Student CSV Import Format
+
+Use endpoint `POST /api/auth/admin/students/import/csv` with payload fields:
+
+- `csvContent`
+- `adminId` (required only for super-admin context)
+
+CSV headers expected:
+
+- `name`
+- `email`
+- `password`
+
+Sample file:
+
+- `backend/samples/student_bulk_import_template.csv`
 
 ## Deployment
 

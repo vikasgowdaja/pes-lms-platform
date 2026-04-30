@@ -37,7 +37,11 @@ export const SignupPage = () => {
     try {
       const data = await authService.signup(form);
       login(data);
-      navigate(data.user.role === "admin" ? "/admin" : "/candidate");
+      if (data.user.role === "super-admin") {
+        navigate("/super-admin");
+      } else {
+        navigate(data.user.role === "admin" ? "/admin" : "/candidate");
+      }
     } catch (err) {
       setError(err.response?.data?.message || "Signup failed");
     } finally {
@@ -75,6 +79,7 @@ export const SignupPage = () => {
         >
           <option value="candidate">Candidate</option>
           <option value="admin">Admin</option>
+          <option value="super-admin">Super Admin</option>
         </select>
         {form.role === "candidate" ? (
           <input

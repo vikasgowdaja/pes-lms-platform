@@ -18,5 +18,14 @@ export const authService = {
   },
   listAdminStudents(params = {}) {
     return api.get("/auth/admin/students", { params }).then((res) => res.data);
+  },
+  importStudentsCsv(payload) {
+    return api.post("/auth/admin/students/import/csv", payload).then((res) => res.data);
+  },
+  listManagedAdmins() {
+    return api.get("/auth/super-admin/admins").then((res) => res.data);
+  },
+  createManagedAdmin(payload) {
+    return api.post("/auth/super-admin/admins", payload).then((res) => res.data);
   }
 };
