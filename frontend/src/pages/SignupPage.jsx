@@ -1,19 +1,34 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { authService } from "../services/authService";
 
 export const SignupPage = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { login } = useAuth();
   const [form, setForm] = useState({
     name: "",
     email: "",
     password: "",
-    role: "candidate"
+    role: "candidate",
+    adminCode: ""
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const roleFromUrl = searchParams.get("role");
+    const adminCodeFromUrl = searchParams.get("adminCode");
+
+    if (roleFromUrl || adminCodeFromUrl) {
+      setForm((prev) => ({
+        ...prev,
+        role: roleFromUrl === "admin" ? "admin" : prev.role,
+        adminCode: adminCodeFromUrl || prev.adminCode
+      }));
+    }
+  }, [searchParams]);
 
   const onSubmit = async (event) => {
     event.preventDefault();
@@ -61,6 +76,14 @@ export const SignupPage = () => {
           <option value="candidate">Candidate</option>
           <option value="admin">Admin</option>
         </select>
+        {form.role === "candidate" ? (
+          <input
+            placeholder="Admin registration code"
+            value={form.adminCode}
+            onChange={(e) => setForm((prev) => ({ ...prev, adminCode: e.target.value.toUpperCase() }))}
+            required
+          />
+        ) : null}
         {error ? <p className="error-text">{error}</p> : null}
         <button className="btn" disabled={loading}>
           {loading ? "Please wait..." : "Signup"}

@@ -17,6 +17,8 @@ Production-oriented full-stack MERN application for online assessments with MCQ 
   - Create tests with mixed MCQ and coding questions
   - Duration, negative marking, randomization controls
   - Publish/unpublish tests
+  - Advanced question editing (add/edit/delete questions inside a test)
+  - CSV question bank import
 - Candidate assessment flow:
   - Start/resume attempt with persistent attempt records
   - Timer enforcement and expiry handling
@@ -31,6 +33,11 @@ Production-oriented full-stack MERN application for online assessments with MCQ 
 - Results and analytics:
   - Score calculation with breakdown
   - Admin analytics endpoint and dashboard cards
+  - Admin activity feed (student + test + status + violations + latest proctor event)
+- Student onboarding:
+  - Admin registration code and link generation
+  - Candidate signup under specific admin code
+  - Admin-side student list for linked candidates
 - Pagination + filtering on tests/attempts APIs
 - Security baseline:
   - Helmet, CORS, rate limiting, mongo sanitization, route protection
@@ -91,6 +98,9 @@ Use `frontend/.env.example` as template.
 - `POST /api/auth/signup`
 - `POST /api/auth/login`
 - `GET /api/auth/me`
+- `GET /api/auth/admin/registration` (admin)
+- `POST /api/auth/admin/registration/regenerate` (admin)
+- `GET /api/auth/admin/students` (admin)
 
 - `GET /api/tests`
 - `GET /api/tests/:id`
@@ -99,6 +109,10 @@ Use `frontend/.env.example` as template.
 - `PATCH /api/tests/:id/publish` (admin)
 - `PATCH /api/tests/:id/unpublish` (admin)
 - `POST /api/tests/import/csv` (admin)
+- `GET /api/tests/:id/questions` (admin)
+- `POST /api/tests/:id/questions` (admin)
+- `PATCH /api/tests/:id/questions/:questionId` (admin)
+- `DELETE /api/tests/:id/questions/:questionId` (admin)
 
 - `POST /api/attempts/start/:testId` (candidate)
 - `GET /api/attempts`
@@ -111,6 +125,7 @@ Use `frontend/.env.example` as template.
 - `POST /api/submissions/:attemptId/:questionId`
 
 - `GET /api/analytics/admin` (admin)
+- `GET /api/analytics/admin/activity` (admin)
 
 ## CSV Import Format
 

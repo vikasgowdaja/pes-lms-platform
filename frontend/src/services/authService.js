@@ -9,5 +9,14 @@ export const authService = {
   },
   me() {
     return api.get("/auth/me").then((res) => res.data);
+  },
+  getAdminRegistration() {
+    return api.get("/auth/admin/registration").then((res) => res.data);
+  },
+  regenerateAdminRegistration() {
+    return api.post("/auth/admin/registration/regenerate").then((res) => res.data);
+  },
+  listAdminStudents(params = {}) {
+    return api.get("/auth/admin/students", { params }).then((res) => res.data);
   }
 };

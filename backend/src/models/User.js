@@ -26,10 +26,23 @@ const userSchema = new mongoose.Schema(
       enum: ["admin", "candidate"],
       default: "candidate",
       index: true
+    },
+    adminCode: {
+      type: String,
+      unique: true,
+      sparse: true,
+      index: true
+    },
+    linkedAdmin: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      index: true
     }
   },
   { timestamps: true }
 );
+
+userSchema.index({ role: 1, linkedAdmin: 1, createdAt: -1 });
 
 userSchema.pre("save", async function hashPassword(next) {
   if (!this.isModified("password")) {

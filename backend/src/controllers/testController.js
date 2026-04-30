@@ -332,3 +332,83 @@ export const getTestById = asyncHandler(async (req, res) => {
 
   return res.json({ test });
 });
+
+const ensureAdminOwnsTest = async (testId, adminId) => {
+  return Test.findOne({ _id: testId, createdBy: adminId });
+};
+
+export const getTestQuestions = asyncHandler(async (req, res) => {
+  const test = await ensureAdminOwnsTest(req.params.id, req.user._id);
+  if (!test) {
+    return res.status(404).json({ message: "Test not found" });
+  }
+
+  const questions = await Question.find({ _id: { $in: test.questions } }).sort({ createdAt: -1 });
+  return res.json({ items: questions });
+});
+
+export const addQuestionToTest = asyncHandler(async (req, res) => {
+  const test = await ensureAdminOwnsTest(req.params.id, req.user._id);
+  if (!test) {
+    return res.status(404).json({ message: "Test not found" });
+  }
+
+  const question = await Question.create({
+    ...sanitizeQuestionInput(req.body),
+    createdBy: req.user._id
+  });
+
+  test.questions.push(question._id);
+  await test.save();
+
+  return res.status(201).json({ question });
+});
+
+export const updateQuestionInTest = asyncHandler(async (req, res) => {
+  const { id, questionId } = req.params;
+  const test = await ensureAdminOwnsTest(id, req.user._id);
+  if (!test) {
+    return res.status(404).json({ message: "Test not found" });
+  }
+
+  const isPartOfTest = test.questions.some((entry) => String(entry) === String(questionId));
+  if (!isPartOfTest) {
+    return res.status(404).json({ message: "Question not part of this test" });
+  }
+
+  const existingQuestion = await Question.findOne({ _id: questionId, createdBy: req.user._id });
+  if (!existingQuestion) {
+    return res.status(404).json({ message: "Question not found" });
+  }
+
+  const updates = sanitizeQuestionInput({
+    ...existingQuestion.toObject(),
+    ...req.body,
+    type: req.body.type || existingQuestion.type
+  });
+  const question = await Question.findOneAndUpdate(
+    { _id: questionId, createdBy: req.user._id },
+    updates,
+    { new: true }
+  );
+
+  if (!question) {
+    return res.status(404).json({ message: "Question not found" });
+  }
+
+  return res.json({ question });
+});
+
+export const deleteQuestionFromTest = asyncHandler(async (req, res) => {
+  const { id, questionId } = req.params;
+  const test = await ensureAdminOwnsTest(id, req.user._id);
+  if (!test) {
+    return res.status(404).json({ message: "Test not found" });
+  }
+
+  test.questions = test.questions.filter((entry) => String(entry) !== String(questionId));
+  await test.save();
+
+  await Question.deleteOne({ _id: questionId, createdBy: req.user._id });
+  return res.json({ ok: true });
+});

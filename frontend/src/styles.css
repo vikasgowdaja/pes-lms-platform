@@ -100,7 +100,7 @@ button {
   font-size: 1rem;
 }
 
-input,
+input:not([type="radio"]):not([type="checkbox"]),
 textarea,
 select {
   width: 100%;
@@ -234,9 +234,36 @@ td {
   display: flex;
   gap: 0.6rem;
   align-items: center;
+  justify-content: flex-start;
   border: 1px solid #ebdfcd;
   border-radius: 12px;
   padding: 0.6rem;
+}
+
+.mcq-item input[type="radio"],
+.mcq-item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  flex: 0 0 auto;
+}
+
+.tab-row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.action-row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.option-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.7rem;
 }
 
 .code-actions {
@@ -264,5 +291,9 @@ td {
 
   .question-nav {
     position: static;
+  }
+
+  .option-grid {
+    grid-template-columns: 1fr;
   }
 }
