@@ -1,0 +1,268 @@
+:root {
+  --bg: #f8f6f1;
+  --bg-alt: #fffdf8;
+  --text: #1f1b17;
+  --muted: #6c6257;
+  --primary: #005a8d;
+  --accent: #e36a2e;
+  --panel: #ffffff;
+  --border: #eadfcd;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Outfit", sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 10% 10%, rgba(227, 106, 46, 0.15), transparent 35%),
+    radial-gradient(circle at 90% 80%, rgba(0, 90, 141, 0.18), transparent 40%),
+    var(--bg);
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.app-root {
+  min-height: 100vh;
+}
+
+.top-nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid var(--border);
+  background: rgba(255, 253, 248, 0.9);
+  backdrop-filter: blur(8px);
+}
+
+.top-nav .brand {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.top-nav nav {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+}
+
+.user-pill {
+  background: #e9f6ff;
+  border: 1px solid #b1d8f2;
+  color: #114c70;
+  padding: 0.2rem 0.7rem;
+  border-radius: 999px;
+}
+
+.app-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.auth-card,
+.panel,
+.question-panel,
+.question-nav {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 16px 32px rgba(30, 20, 10, 0.08);
+}
+
+.auth-card {
+  max-width: 460px;
+  margin: 4rem auto;
+  padding: 1.2rem;
+}
+
+.form-grid {
+  display: grid;
+  gap: 0.7rem;
+}
+
+input,
+textarea,
+select,
+button {
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 0.7rem;
+  border-radius: 10px;
+  border: 1px solid #d6cab5;
+  background: var(--bg-alt);
+}
+
+.btn {
+  border: none;
+  border-radius: 10px;
+  padding: 0.65rem 1rem;
+  background: linear-gradient(120deg, var(--primary), #0077b8);
+  color: #fff;
+  cursor: pointer;
+}
+
+.btn-ghost {
+  background: #f2f4f6;
+  color: var(--text);
+  border: 1px solid #d4dbe2;
+}
+
+.dashboard-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.panel {
+  padding: 1rem;
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 0.8rem;
+}
+
+.kpi-card {
+  border: 1px dashed #dbc8ad;
+  border-radius: 12px;
+  padding: 0.8rem;
+}
+
+.kpi-card strong {
+  display: block;
+  font-size: 1.3rem;
+  margin-top: 0.35rem;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  text-align: left;
+  border-bottom: 1px solid #eee2cd;
+  padding: 0.7rem;
+}
+
+.center-state {
+  min-height: 30vh;
+  display: grid;
+  place-items: center;
+}
+
+.error-text {
+  color: #bc1f1f;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.test-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 1rem;
+}
+
+.question-nav {
+  padding: 1rem;
+  height: fit-content;
+  position: sticky;
+  top: 80px;
+}
+
+.question-buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 0.8rem;
+}
+
+.question-buttons button {
+  padding: 0.4rem;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background: #f6f7f8;
+  cursor: pointer;
+}
+
+.question-buttons button.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: #cf5b22;
+}
+
+.question-panel {
+  padding: 1rem;
+}
+
+.timer {
+  font-size: 1.2rem;
+  color: #9b2c2c;
+}
+
+.mcq-list {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.mcq-item {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  border: 1px solid #ebdfcd;
+  border-radius: 12px;
+  padding: 0.6rem;
+}
+
+.code-actions {
+  display: flex;
+  gap: 0.6rem;
+  margin-bottom: 0.7rem;
+}
+
+.result-box {
+  margin-top: 0.7rem;
+  border: 1px solid #d9ced8;
+  border-radius: 12px;
+  padding: 0.7rem;
+  background: #faf5fb;
+}
+
+.result-box pre {
+  white-space: pre-wrap;
+}
+
+@media (max-width: 900px) {
+  .test-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .question-nav {
+    position: static;
+  }
+}

@@ -1,0 +1,21 @@
+questionTitle,questionDescription,optionA,optionB,optionC,optionD,correctAnswers,allowMultiple,marks,negativeMarks
+Quantitative Aptitude - Profit Margin,"A product is sold for 2400 after offering a 20% discount on the marked price. If the cost price is 1500, what is the profit percentage?",20%,28%,35%,40%,B,false,1,0.25
+Data Interpretation - Revenue Growth,"A company's revenue increased from 48 million to 60 million in one year. What is the year-over-year growth rate?",20%,22%,25%,30%,C,false,1,0.25
+Logical Reasoning - Seating Arrangement,"In a row of five seats, A sits immediately left of C, B sits at one end, and D sits immediately right of B. Which statement must be true?",A is at an end,C is not at an end,D is at an end,E is between A and C,B,false,1,0.25
+Verbal Ability - Sentence Improvement,"Choose the most appropriate correction: 'Neither the manager nor the engineers was available for the review call.'",was available,were available,is available,have been available,B,false,1,0.25
+Computer Fundamentals - OS,"Which scheduling algorithm can cause starvation for low-priority processes if not implemented with aging?",Round Robin,First Come First Serve,Priority Scheduling,Shortest Job First,C,false,1,0.25
+DBMS - Normalization,"Which normal form removes transitive dependency from non-key attributes?",First Normal Form,Second Normal Form,Third Normal Form,Boyce-Codd Normal Form,C,false,1,0.25
+SQL - Aggregation,"Which query correctly returns departments where average salary is above 70000?","SELECT dept_id FROM employees WHERE AVG(salary) > 70000;","SELECT dept_id FROM employees GROUP BY dept_id HAVING AVG(salary) > 70000;","SELECT dept_id FROM employees HAVING AVG(salary) > 70000 GROUP BY dept_id;","SELECT dept_id FROM employees GROUP BY dept_id WHERE AVG(salary) > 70000;",B,false,1,0.25
+SQL - Joins,"Which join returns all rows from both tables and fills unmatched columns with NULL values?",INNER JOIN,LEFT JOIN,RIGHT JOIN,FULL OUTER JOIN,D,false,1,0.25
+OOPs - Principles,"Which options are examples of polymorphism in object-oriented programming?",Method overloading,Method overriding,Encapsulation,Abstraction,A|B,true,2,0.5
+DSA - Time Complexity,"What is the time complexity of binary search on a sorted array of n elements?",O(n),O(log n),O(n log n),O(1),B,false,1,0.25
+DSA - Hashing,"Under ideal conditions, average-case lookup time in a hash table is:",O(n),O(log n),O(1),O(n log n),C,false,1,0.25
+Networking - Protocols,"Which protocol is primarily used for secure communication over the web?",HTTP,FTP,TLS,SMTP,C,false,1,0.25
+Software Engineering - SDLC,"In Agile Scrum, who is primarily responsible for maximizing product value and managing the product backlog?",Scrum Master,Product Owner,Development Team,Project Sponsor,B,false,1,0.25
+Version Control - Git,"Which command safely updates your local branch with remote changes while preserving local commits linearly?",git merge origin/main,git pull --rebase,git fetch --all,git cherry-pick,B,false,1,0.25
+Java - Collections,"Which Java collection maintains insertion order and allows duplicates?",HashSet,TreeSet,ArrayList,PriorityQueue,C,false,1,0.25
+Python - Language Features,"Which of the following are valid Python iterable types?",list,dict,set,all of these,D,false,1,0.25
+C++ - Memory Management,"Which keyword is used to release dynamically allocated memory for a single object in C++?",free,release,delete,dispose,C,false,1,0.25
+Web Development - HTTP Codes,"Which HTTP status code indicates that authentication is required and has failed or not yet been provided?",400,401,403,404,B,false,1,0.25
+Cloud Basics - Reliability,"Which architecture pattern directly improves fault tolerance and high availability?",Single instance deployment,Multi-region active-active deployment,Hardcoded retry loop in UI,Disabling health checks,B,false,1,0.25
+Placement Coding Logic - Arrays,"Given an array, what is the most efficient typical approach to detect if any pair sums to a target value in average O(n) time?",Sort then two-pointer O(n log n),Brute force nested loops,Use hash set while scanning,Dynamic programming table,C,false,1,0.25
