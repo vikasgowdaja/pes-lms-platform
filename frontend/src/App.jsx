@@ -18,7 +18,7 @@ const TopNav = () => {
 
   return (
     <header className="top-nav">
-      <div className="brand">PES Assess</div>
+      <div className="brand">C2F LMS</div>
       <nav>
         {isAuthenticated ? (
           <>

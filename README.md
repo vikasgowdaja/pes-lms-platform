@@ -1,4 +1,4 @@
-# PES LMS Assessment Platform (MERN)
+# C2F LMS Assessment Platform (MERN)
 
 Production-oriented full-stack MERN application for online assessments with MCQ and coding questions.
 
